@@ -1,0 +1,59 @@
+﻿@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Добавяне на потребител";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg border-secondary"
+         style="background: linear-gradient(145deg, #2b2b2b, #1f1f1f); color: #e6e6e6;">
+
+        <div class="card-header bg-success text-warning fw-bold rounded-top-3">
+            <h3 class="mb-0"><i class="bi bi-person-plus"></i> @ViewData["Title"]</h3>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="p-3">
+
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger shadow-sm"></div>
+
+                <div class="mb-3">
+                    <label asp-for="FirstName" class="form-label fw-bold">Име</label>
+                    <input asp-for="FirstName" class="form-control shadow-sm" required placeholder="Въведете име..." />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LastName" class="form-label fw-bold">Фамилия</label>
+                    <input asp-for="LastName" class="form-control shadow-sm" required placeholder="Въведете фамилия..." />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-bold">Имейл</label>
+                    <input asp-for="Email" type="email" class="form-control shadow-sm" required placeholder="example@mail.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Парола</label>
+                    <input type="password" name="password" class="form-control shadow-sm" required placeholder="********" />
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" class="btn btn-outline-light btn-lg shadow-sm">
+                        <i class="bi bi-arrow-left"></i> Отказ
+                    </a>
+                    <button type="submit" class="btn btn-success btn-lg shadow-sm">
+                        <i class="bi bi-check-circle"></i> Създай
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

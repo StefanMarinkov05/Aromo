@@ -1,0 +1,48 @@
+﻿@model Aromo.Models.Brand
+
+@{
+    ViewData["Title"] = "Изтриване на марка";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">⚠ Изтриване на марка</h4>
+                </div>
+
+                <div class="card-body">
+                    <p class="text-muted">
+                        Това действие е <strong>необратимо</strong>.
+                    </p>
+
+                    <dl class="row">
+                        <dt class="col-sm-4">Марка</dt>
+                        <dd class="col-sm-8 fw-semibold">
+                            @Model.Name
+                        </dd>
+                    </dl>
+
+                    <form asp-controller="Brands" asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="PerfumeFeatures"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                Отказ
+                            </a>
+
+                            <button type="submit" class="btn btn-danger px-4">
+                                Изтрий
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

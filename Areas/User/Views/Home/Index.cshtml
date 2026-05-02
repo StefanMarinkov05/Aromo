@@ -1,0 +1,104 @@
+﻿@using Aromo
+@using Aromo.Models
+
+@{
+    ViewData["Title"] = "Добре дошли";
+}
+
+<section class="vh-100 d-flex align-items-center text-light position-relative overflow-hidden"
+         style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/bg1.png') no-repeat center center; background-size: cover;">
+
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 2;">
+                <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill">
+                    Нишова парфюмерия
+                </span>
+
+                <h1 class="display-4 fw-bold mt-3">
+                    Ароматът,<br />
+                    който говори вместо теб
+                </h1>
+
+                <p class="lead mt-4 text-white-50">
+                    Aromo е мястото, където страстта, стилът и характерът се
+                    превръщат в аромат. Открий парфюми, които не следват
+                    тенденции — те ги създават.
+                </p>
+
+                <div class="d-flex gap-3 mt-4">
+                    <a asp-area="User"
+                       asp-controller="Perfumes"
+                       asp-action="Index"
+                       class="btn btn-warning btn-lg px-4 rounded-pill shadow">
+                        Разгледай парфюмите
+                    </a>
+
+                    <a asp-area="User"
+                       asp-controller="Home"
+                       asp-action="Contacts"
+                       class="btn btn-outline-light btn-lg px-4 rounded-pill">
+                        Свържи се с нас
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-center position-relative">
+                <img src="~/images/perfume2.jpg"
+                     class="img-fluid rounded-4 shadow-lg border border-secondary"
+                     alt="Луксозен парфюм"
+                     style="max-height:520px; object-fit:cover; filter: contrast(1.05) saturate(1.1);" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 position-relative"
+         style="background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('/images/bg2.png') no-repeat center center; background-size: cover;">
+
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2 class="fw-bold" style="color:black">Защо Aromo?</h2>
+                <p class="text-muted mt-2">
+                    Защото ароматът е личен подпис.
+                </p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center p-4 rounded-4 bg-white bg-opacity-75">
+                    <div class="fs-1 mb-3">🌿</div>
+                    <h5 class="fw-bold">Подбрани нотки</h5>
+                    <p class="text-muted">
+                        Всяка композиция е балансирана между връхни,
+                        свърцеви и базови нотки.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center p-4 rounded-4 bg-white bg-opacity-75">
+                    <div class="fs-1 mb-3">🖤</div>
+                    <h5 class="fw-bold">Силен характер</h5>
+                    <p class="text-muted">
+                        Парфюми за хора, които не се страхуват
+                        да бъдат запомнени.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center p-4 rounded-4 bg-white bg-opacity-75">
+                    <div class="fs-1 mb-3">✨</div>
+                    <h5 class="fw-bold">Луксозно усещане</h5>
+                    <p class="text-muted">
+                        Дизайн и съдържание, създадени с внимание
+                        към всеки детайл.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

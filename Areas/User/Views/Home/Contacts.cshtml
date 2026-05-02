@@ -1,0 +1,105 @@
+﻿@{
+    ViewData["Title"] = "Контакти";
+}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-gold">Свържи се с нас</h1>
+        <p class="text-muted fs-5">
+            Ароматите разказват истории. Нека чуем твоята.
+        </p>
+    </div>
+
+    <div class="row g-5 align-items-stretch">
+
+        <div class="col-lg-5">
+            <div class="card h-100 border-0 shadow-lg bg-dark text-light rounded-4 p-4">
+
+                <h4 class="fw-bold mb-4 text-gold">Парфюмерия "Аромо"</h4>
+
+                <p class="mb-3">
+                    📍 <strong>Адрес:</strong><br />
+                    Пазарджик, България
+                </p>
+
+                <p class="mb-3">
+                    📞 <strong>Телефон:</strong><br />
+                    +359 88 123 4567
+                </p>
+
+                <p class="mb-3">
+                    ✉️ <strong>Имейл:</strong><br />
+                    contact@aromo.bg
+                </p>
+
+                <hr class="border-secondary" />
+
+                <p class="fst-italic text-muted">
+                    Работно време:<br />
+                    Понеделник – Петък: 09:00 – 18:00
+                </p>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-lg rounded-4 p-4">
+
+                <h4 class="fw-bold mb-4">Изпрати ни съобщение</h4>
+
+                <form method="post">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Име</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Твоето име"
+                                   required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Имейл</label>
+                            <input type="email"
+                                   class="form-control"
+                                   placeholder="name@example.com"
+                                   required />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Относно</label>
+                            <input type="text"
+                                   class="form-control"
+                                   placeholder="Тема на съобщението"
+                                   required />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Съобщение</label>
+                            <textarea class="form-control"
+                                      rows="5"
+                                      placeholder="Напиши ни как можем да помогнем..."
+                                      required></textarea>
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-end">
+                            <button type="submit"
+                                    class="btn btn-dark px-5 py-2">
+                                Изпрати
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .text-gold {
+        color: #d4af37;
+    }
+</style>

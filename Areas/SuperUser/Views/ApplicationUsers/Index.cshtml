@@ -1,0 +1,58 @@
+﻿@using Aromo.Models
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<ApplicationUser>
+@inject UserManager<ApplicationUser> userManager;
+
+@{
+    ViewData["Title"] = "Потребители";
+}
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 fw-bold text-center mb-5 text-gold">Управление на потребителите
+            <a asp-action="Create" class="btn btn-gold">➕ Нов потребител</a>
+        </h1>
+    </div>
+
+
+    <div class="row g-4">
+        @foreach (var user in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 shadow-lg border-secondary"
+                     style="background: linear-gradient(145deg, #2b2b2b, #1f1f1f); color: #e6e6e6;">
+
+                    <div class="card-body d-flex flex-column">
+
+                        <h5 class="card-title text-warning fw-bold mb-2">
+                            @user.FirstName @user.LastName
+                        </h5>
+
+                        <p class="small mb-2">
+                            <strong>Имейл:</strong> @user.Email <br />
+                        </p>
+
+                        <div class="mt-auto d-flex justify-content-between">
+                            @if (user.Id != userManager.GetUserId(User))
+                            {
+                                <a class="btn btn-outline-light btn-sm"
+                                   asp-action="Edit"
+                                   asp-route-id="@user.Id">
+                                    ✏️ Редактиране
+                                </a>
+                                <a class="btn btn-danger btn-sm"
+                                   asp-action="Delete"
+                                   asp-route-id="@user.Id">
+                                    🗑️ Изтриване
+                                </a>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

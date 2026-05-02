@@ -1,0 +1,67 @@
+﻿@page
+@model LogoutModel
+
+@{
+    ViewData["Title"] = "Изход";
+}
+
+<div class="container py-5 text-center">
+    <div class="card logout-card shadow-lg border-0 rounded-4 p-5 mx-auto" style="max-width:520px;">
+
+        @if (User.Identity?.IsAuthenticated ?? false)
+        {
+            <h2 class="fw-bold text-gold mb-4">
+                Сигурен ли си, че искаш да излезеш?
+            </h2>
+
+            <form asp-area="Identity"
+                  asp-page="/Account/Logout"
+                  asp-route-returnUrl="@Url.Content("~/")"
+                  method="post">
+
+                <button type="submit"
+                        class="btn btn-gold px-5 py-2 fw-bold">
+                    Изход
+                </button>
+            </form>
+        }
+        else
+        {
+            <h2 class="fw-bold text-gold mb-3">
+                Успешно излезе от профила си
+            </h2>
+
+            <a asp-area="User"
+               asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-outline-light mt-3">
+                Към началото
+            </a>
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        background: radial-gradient(circle at top, #111, #000);
+    }
+
+    .logout-card {
+        background: linear-gradient(180deg, #141414, #1c1c1c);
+        color: #f5f5f5;
+    }
+
+    .text-gold {
+        color: #d4af37;
+    }
+
+    .btn-gold {
+        background: linear-gradient(135deg, #d4af37, #b8962e);
+        color: #000;
+        border: none;
+    }
+
+    .btn-gold:hover {
+        background: linear-gradient(135deg, #e5c75a, #c9a73a);
+    }
+</style>

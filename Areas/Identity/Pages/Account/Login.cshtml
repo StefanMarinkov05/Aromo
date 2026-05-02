@@ -1,0 +1,130 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Вход";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+
+            <div class="card login-card shadow-lg border-0 rounded-4 p-4">
+
+                <div class="text-center mb-4">
+                    <h1 class="fw-bold text-gold mb-2">Добре дошъл</h1>
+                    <p class="text-muted">
+                        Влез в своя ароматен свят
+                    </p>
+                </div>
+
+                <form id="account" method="post">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger small mb-3"
+                         role="alert">
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email"
+                               class="form-control bg-dark text-light border-secondary"
+                               autocomplete="username"
+                               aria-required="true"
+                               placeholder="name@example.com" />
+                        <label asp-for="Input.Email" class="text-muted">
+                            Имейл адрес
+                        </label>
+                        <span asp-validation-for="Input.Email"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password"
+                               class="form-control bg-dark text-light border-secondary"
+                               autocomplete="current-password"
+                               aria-required="true"
+                               placeholder="password" />
+                        <label asp-for="Input.Password" class="text-muted">
+                            Парола
+                        </label>
+                        <span asp-validation-for="Input.Password"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input"
+                               asp-for="Input.RememberMe" />
+                        <label asp-for="Input.RememberMe"
+                               class="form-check-label text-light">
+                            Запомни ме
+                        </label>
+                    </div>
+
+                    <!-- SUBMIT -->
+                    <button id="login-submit"
+                            type="submit"
+                            class="btn btn-gold w-100 py-2 fw-bold">
+                        Вход
+                    </button>
+
+                    <!-- REGISTER -->
+                    <div class="text-center mt-4">
+                        <p class="mb-0 text-muted">
+                            Нямаш акаунт?
+                            <a asp-page="./Register"
+                               asp-route-returnUrl="@Model.ReturnUrl"
+                               class="link-gold fw-bold">
+                                Регистрирай се
+                            </a>
+                        </p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    body {
+        background: radial-gradient(circle at top, #111, #000);
+    }
+
+    .login-card {
+        background: linear-gradient(180deg, #141414, #1c1c1c);
+        color: #f5f5f5;
+    }
+
+    .text-gold {
+        color: #d4af37;
+    }
+
+    .btn-gold {
+        background: linear-gradient(135deg, #d4af37, #b8962e);
+        color: #000;
+        border: none;
+    }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #e5c75a, #c9a73a);
+            color: #000;
+        }
+
+    .link-gold {
+        color: #d4af37;
+        text-decoration: none;
+    }
+
+        .link-gold:hover {
+            text-decoration: underline;
+        }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #d4af37;
+    }
+</style>

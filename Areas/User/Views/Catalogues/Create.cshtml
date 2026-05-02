@@ -1,0 +1,31 @@
+﻿@model Aromo.Models.Catalogue
+@{
+    ViewData["Title"] = "Нов каталог";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-gold mb-4">➕ Нов каталог</h2>
+
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Име на каталога</label>
+            <input asp-for="Name" class="form-control" placeholder="напр. Любими летни..." />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-gold">Създай</button>
+        <a asp-action="Index" class="btn btn-outline-secondary ms-2">Назад</a>
+    </form>
+</div>
+@if (ViewBag.Errors != null)
+{
+    <ul class="text-danger">
+        @foreach (var error in ViewBag.Errors)
+        {
+            <li>@error</li>
+        }
+    </ul>
+}
+

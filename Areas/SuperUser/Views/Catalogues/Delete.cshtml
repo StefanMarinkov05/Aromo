@@ -1,0 +1,27 @@
+﻿@model Aromo.Models.Catalogue
+@{
+    ViewData["Title"] = "Изтриване на каталог";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-danger mb-3">🗑️ Изтриване на каталог</h2>
+
+    <div class="alert alert-warning shadow-sm">
+        Сигурни ли сте, че искате да изтриете каталога
+        <strong>@Model.Name</strong>?
+        <br />
+        Всички парфюми ще бъдат премахнати от него.
+    </div>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-danger">
+            ❌ Изтрий
+        </button>
+
+        <a asp-action="Index" class="btn btn-outline-secondary ms-2">
+            Отказ
+        </a>
+    </form>
+</div>

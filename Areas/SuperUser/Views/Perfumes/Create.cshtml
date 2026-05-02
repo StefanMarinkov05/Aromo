@@ -1,0 +1,165 @@
+﻿@model Aromo.Models.Perfume
+
+@{
+    ViewData["Title"] = "Добавяне на парфюм";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold text-gold mb-4">➕ Добавяне на парфюм</h2>
+
+    <form asp-action="Create" enctype="multipart/form-data" id="perfumeForm">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Original" class="form-label"></label>
+                <input asp-for="Original" class="form-control" />
+                <span asp-validation-for="Original" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="BrandId" class="form-label"></label>
+                <a asp-controller="Brands"
+                   asp-action="Create"
+                   class="btn btn-sm btn-gold">＋</a>
+                <select asp-for="BrandId" asp-items="ViewBag.BrandId" class="form-select"></select>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="GenderId" class="form-label"></label>
+                <a asp-controller="Genders"
+                   asp-action="Create"
+                   class="btn btn-sm btn-gold">＋</a>
+                <select asp-for="GenderId" asp-items="ViewBag.GenderId" class="form-select"></select>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="SeasonId" class="form-label"></label>
+                <a asp-controller="Seasons"
+                   asp-action="Create"
+                   class="btn btn-sm btn-gold">＋</a>
+                <select asp-for="SeasonId" asp-items="ViewBag.SeasonId" class="form-select"></select>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Volume" class="form-label"></label>
+                <input asp-for="Volume" class="form-control" />
+                <span asp-validation-for="Volume" class="text-danger"></span>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">📷 Снимка</label>
+                <input type="file" name="image" class="form-control"
+                       accept="image/*"
+                       onchange="previewImage(event)" />
+
+                <img id="imagePreview"
+                     src="/images/default.png"
+                     class="mt-3 rounded shadow"
+                     style="max-height:200px;" />
+
+            </div>
+
+            <div class="col-12">
+                <hr class="my-4" />
+                <h5 class="fw-bold text-gold">🌸 Ароматни нотки</h5>
+                <a asp-controller="Scents"
+                   asp-action="Create"
+                   class="btn btn-sm btn-gold">＋</a>
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Връхни нотки</label>
+                <select 
+                    name="TopScentsIds"
+                    asp-items="ViewBag.TopScentsIds"
+                    class="form-select"
+                    id="TopScents" 
+                    multiple size="6">
+                </select>
+
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Сърцеви нотки</label>
+                <select name="HeartScentsIds"
+                        asp-items="ViewBag.HeartScentsIds"
+                        class="form-select"
+                        id="HeartScents"
+                        multiple size="6"></select>
+
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Базови нотки</label>
+                <select name="BaseScentsIds"
+                        asp-items="ViewBag.BaseScentsIds"
+                        class="form-select"
+                        id="BaseScents"
+                        multiple size="6"></select>
+
+            </div>
+
+            <div class="col-12 text-end mt-4">
+                <button type="submit" class="btn btn-gold px-4">Запази</button>
+                <a asp-action="Index" class="btn btn-outline-secondary ms-2">Назад</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function previewImage(event) {
+            const img = document.getElementById('imagePreview');
+            img.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+        const form = document.getElementById("perfumeForm");
+
+        form.addEventListener("submit", function (e) {
+
+            const getValues = id =>
+                Array.from(document.getElementById(id).selectedOptions)
+                     .map(o => o.value);
+
+            const top = getValues("TopScents");
+            const heart = getValues("HeartScents");
+            const base = getValues("BaseScents");
+
+            const all = [...top, ...heart, ...base];
+            const duplicates = all.filter((v, i) => all.indexOf(v) !== i);
+
+            if (duplicates.length > 0) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+
+                alert("Една и съща нотка не може да бъде в повече от една категория.");
+                return false;
+            }
+        });
+    });
+    </script>
+}

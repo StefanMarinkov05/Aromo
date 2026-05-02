@@ -1,0 +1,45 @@
+﻿@model Aromo.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Изтриване на потребител";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg border-secondary"
+         style="background: linear-gradient(145deg, #2b2b2b, #1f1f1f); color: #e6e6e6;">
+
+        <div class="card-header bg-danger text-warning fw-bold rounded-top-3">
+            <h3 class="mb-0"><i class="bi bi-person-x"></i> Потвърждение за изтриване</h3>
+        </div>
+
+        <div class="card-body">
+            <p class="lead text-danger">
+                <strong>⚠️ Внимание:</strong> Сигурен ли сте, че искате да изтриете потребителя
+                <strong>@Model.FirstName @Model.LastName</strong>?
+            </p>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <dl class="row">
+                        <dt class="col-sm-4 fw-bold">№</dt>
+                        <dd class="col-sm-8">@Model.Id</dd>
+
+                        <dt class="col-sm-4 fw-bold">Имейл</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="Delete" method="post" class="d-flex justify-content-between">
+                <input type="hidden" asp-for="Id" />
+                <a asp-action="Index" class="btn btn-outline-light btn-lg shadow-sm">
+                    <i class="bi bi-arrow-left"></i> Отказ
+                </a>
+                <button type="submit" class="btn btn-danger btn-lg shadow-sm">
+                    <i class="bi bi-trash"></i> Изтрий
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+﻿@model Aromo.Models.Scent
+
+@{
+    ViewData["Title"] = "Редактиране на нотка";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-warning text-dark">
+                    <h4 class="mb-0">✏️ Редактиране на нотка</h4>
+                </div>
+
+                <div class="card-body">
+                    <form asp-controller="Scents" asp-action="Edit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3">
+                            <label asp-for="Name" class="form-label fw-semibold">
+                                Име на нотката
+                            </label>
+                            <input asp-for="Name"
+                                   class="form-control"
+                                   placeholder="Въведи ново име на нотката" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="PerfumeFeatures"
+                               asp-action="Index"
+                               class="btn btn-outline-secondary">
+                                ← Назад
+                            </a>
+
+                            <button type="submit" class="btn btn-warning px-4 text-dark">
+                                Запази промените
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

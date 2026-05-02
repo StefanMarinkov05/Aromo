@@ -1,0 +1,119 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+
+            <div class="card register-card shadow-lg border-0 rounded-4 p-4">
+
+                <div class="text-center mb-4">
+                    <h1 class="fw-bold text-gold">Създай профил</h1>
+                    <p class="text-muted">Присъедини се към света на ароматите</p>
+                </div>
+
+                <form id="registerForm"
+                      asp-route-returnUrl="@Model.ReturnUrl"
+                      method="post">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger small mb-3"></div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.FirstName"
+                               class="form-control bg-dark text-light border-secondary"
+                               placeholder="Име" />
+                        <label asp-for="Input.FirstName">Име</label>
+                        <span asp-validation-for="Input.FirstName"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.LastName"
+                               class="form-control bg-dark text-light border-secondary"
+                               placeholder="Фамилия" />
+                        <label asp-for="Input.LastName">Фамилия</label>
+                        <span asp-validation-for="Input.LastName"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email"
+                               class="form-control bg-dark text-light border-secondary"
+                               autocomplete="username"
+                               placeholder="name@example.com" />
+                        <label asp-for="Input.Email">Имейл</label>
+                        <span asp-validation-for="Input.Email"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password"
+                               class="form-control bg-dark text-light border-secondary"
+                               autocomplete="new-password"
+                               placeholder="Парола" />
+                        <label asp-for="Input.Password">Парола</label>
+                        <span asp-validation-for="Input.Password"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="Input.ConfirmPassword"
+                               class="form-control bg-dark text-light border-secondary"
+                               autocomplete="new-password"
+                               placeholder="Потвърди парола" />
+                        <label asp-for="Input.ConfirmPassword">
+                            Потвърди парола
+                        </label>
+                        <span asp-validation-for="Input.ConfirmPassword"
+                              class="text-danger small"></span>
+                    </div>
+
+                    <button id="registerSubmit"
+                            type="submit"
+                            class="btn btn-gold w-100 py-2 fw-bold">
+                        Регистрация
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    body {
+        background: radial-gradient(circle at top, #111, #000);
+    }
+
+    .register-card {
+        background: linear-gradient(180deg, #141414, #1c1c1c);
+        color: #f5f5f5;
+    }
+
+    .text-gold {
+        color: #d4af37;
+    }
+
+    .btn-gold {
+        background: linear-gradient(135deg, #d4af37, #b8962e);
+        color: #000;
+        border: none;
+    }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #e5c75a, #c9a73a);
+        }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #d4af37;
+    }
+</style>

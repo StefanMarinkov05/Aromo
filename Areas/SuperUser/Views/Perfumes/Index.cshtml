@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Aromo.Models.Perfume>
+
+@{
+    ViewData["Title"] = "Парфюми";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 fw-bold text-center mb-5 text-gold">Парфюми
+        <a asp-action="Create" class="btn btn-gold">➕ Нов парфюм</a></h1>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-hover align-middle shadow rounded-3">
+            <thead class="table-secondary text-dark">
+                <tr>
+                    <th>Снимка</th>
+                    <th>Име</th>
+                    <th>Марка</th>
+                    <th>Пол</th>
+                    <th>Сезон</th>
+                    <th>Връхни</th>
+                    <th>Сърцеви</th>
+                    <th>Базови</th>
+                    <th>Цена</th>
+                    <th>Обем</th>
+                    <th class="text-end">Действия</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        @{var url = ((Dictionary<int, string>)ViewBag.ImageUrls)[p.Id];
+                        }
+                        <td style="width:100px">
+                            <img src="@url"
+                                 onerror="this.onerror=null;this.src='/images/default.png';"
+                                 class="rounded shadow"
+                                 style="width:80px;height:80px;object-fit:cover;" />
+                        </td>
+
+                        <td class="fw-semibold">@p.Name</td>
+                        <td>@p.Brand?.Name</td>
+                        <td>@p.Gender?.Name</td>
+                        <td>@p.Season?.Name</td>
+
+                        <td>
+                            @string.Join(", ", p.TopScents.Select(s => s.Name))
+                        </td>
+
+                        <td>
+                            @string.Join(", ", p.HeartScents.Select(s => s.Name))
+                        </td>
+
+                        <td>
+                            @string.Join(", ", p.BaseScents.Select(s => s.Name))
+                        </td>
+
+                        <td>€@p.Price.ToString("0.00")</td>
+                        <td>@(p.Volume)mL</td>
+
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-light">✏️</a>
+                            <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-sm btn-outline-info">👁</a>
+                            <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-sm btn-outline-danger">🗑</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .btn-gold {
+        background: #d4af37;
+        color: #111;
+        font-weight: 600;
+    }
+</style>

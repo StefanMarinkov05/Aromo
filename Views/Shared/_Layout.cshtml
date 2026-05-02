@@ -1,0 +1,238 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Aromo.Models
+@using Aromo
+@using System.Security.Claims
+
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AROMO</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: radial-gradient(circle at top, #1b1a18, #0e0d0c);
+            color: #e6e3dc;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navbar {
+            background: rgba(15, 14, 12, 0.95);
+            border-bottom: 1px solid #3b2f1d;
+        }
+
+        .navbar-brand {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 3px;
+            font-weight: 700;
+            color: #d4af37 !important;
+        }
+
+        .nav-link {
+            color: #e0d6c3 !important;
+            font-weight: 500;
+            position: relative;
+        }
+
+            .nav-link:hover {
+                color: #d4af37 !important;
+            }
+
+        .dropdown-menu {
+            background-color: #1b1a18;
+            border: 1px solid #3b2f1d;
+        }
+
+        .dropdown-item {
+            color: #e0d6c3;
+        }
+
+            .dropdown-item:hover {
+                background-color: #2a2418;
+                color: #d4af37;
+            }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.9)), url('/images/perfume-hero.jpg') center/cover no-repeat;
+            padding: 6rem 1rem;
+            border-bottom: 1px solid #3b2f1d;
+        }
+
+            .hero h1 {
+                font-family: 'Cinzel', serif;
+                font-size: 3rem;
+                color: #d4af37;
+                letter-spacing: 2px;
+            }
+
+            .hero p {
+                max-width: 700px;
+                margin: 1rem auto;
+                font-size: 1.1rem;
+                color: #ddd4c2;
+            }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37, #b8962e);
+            color: #1b1a18;
+            font-weight: 600;
+            border: none;
+        }
+
+            .btn-gold:hover {
+                background: linear-gradient(135deg, #e6c75a, #c8a83a);
+                color: #000;
+            }
+
+        footer {
+            border-top: 1px solid #3b2f1d;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow">
+            <div class="container">
+
+                <a class="navbar-brand"
+                   asp-area="User"
+                   asp-controller="Home"
+                   asp-action="Index">
+                    AROMO
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="User"
+                               asp-controller="Perfumes"
+                               asp-action="Index">
+                                Парфюми
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <a class="nav-link"
+                                   asp-area="User"
+                                   asp-controller="Catalogues"
+                                   asp-action="Index">
+                                    Моите каталози
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link"
+                                   asp-area="Identity"
+                                   asp-page="/Account/Login">
+                                    Моите каталози
+                                </a>
+                            }
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area="User"
+                               asp-controller="Home"
+                               asp-action="Contacts">
+                                Контакти
+                            </a>
+                        </li>
+
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole(AddDefaultUsers.ADMIN_ROLE))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle"
+                                   href="#"
+                                   data-bs-toggle="dropdown">
+                                    Админ
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-area="SuperUser" asp-controller="ApplicationUsers" asp-action="Index">Потребители</a></li>
+                                    <li><a class="dropdown-item" asp-area="SuperUser" asp-controller="Perfumes" asp-action="Index">Парфюми</a></li>
+                                    <li><a class="dropdown-item" asp-area="SuperUser" asp-controller="PerfumeFeatures" asp-action="Index">Вариации</a></li>
+                                    <li><a class="dropdown-item" asp-area="SuperUser" asp-controller="Catalogues" asp-action="Index">Каталози</a></li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto">
+                        @if (!SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">
+                                    <i class="bi bi-box-arrow-in-right"></i> Вход
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">
+                                    <i class="bi bi-person-plus"></i> Регистрация
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            var u = await UserManager.GetUserAsync(User);
+                            @if (u != null) {
+                                <li class="nav-item">
+                                    <span class="nav-link">
+                                        Здравей, <strong>@u.FirstName</strong>
+                                    </span>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                                    <button class="btn btn-link nav-link">
+                                        Изход
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container my-5">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="py-4 text-center">
+        <div class="container">
+            <small>© @DateTime.Now.Year AROMO · Luxury Perfumery</small>
+        </div>
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

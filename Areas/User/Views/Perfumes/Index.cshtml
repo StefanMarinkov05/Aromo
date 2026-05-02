@@ -1,0 +1,313 @@
+﻿@model IEnumerable<Aromo.Models.Perfume>
+
+@{
+    ViewData["Title"] = "Парфюми";
+    var catalogues = ViewBag.Catalogues as List<Aromo.Models.Catalogue> ?? new();
+}
+
+<div class="container py-5">
+    <h1 class="display-5 fw-bold text-center mb-5 text-gold">
+        ✨ Парфюми
+    </h1>
+
+    <form method="get" class="mb-4 d-flex gap-2">
+        <input type="text"
+        name="search"
+        value="@ViewBag.Search"
+        class="form-control"
+        placeholder="Търси по име, марка, аромат, обем..." />
+
+        <button type="submit" class="btn btn-gold">
+            🔍 Търси
+        </button>
+    </form>
+
+
+
+    @{
+        var seasonNames = new Dictionary<int, string>
+            {
+                [1] = "пролет",
+                [2] = "лято",
+                [3] = "есен",
+                [4] = "зима"
+            };
+
+        int currentId = ViewBag.CurrentSeasonId ?? 4;
+        string sortBy = ViewBag.SortBy as string ?? "id";
+        string sortDir = ViewBag.SortDir as string ?? "asc";
+        string currentSearch = ViewBag.Search as string;
+
+        var sortLabels = new Dictionary<string, string>
+            {
+                ["name"] = "Име",
+                ["brand"] = "Марка",
+                ["price"] = "Цена",
+                ["season"] = $"Подходящи от текущия сезон ({seasonNames[currentId]})"
+                
+            };
+
+        // Helper function to maintain search state while sorting
+        Func<string, string, string> getSortUrl = (field, dir) =>
+        Url.Action("Index", new { sortBy = field, sortDir = dir, search = currentSearch });
+        var seasonCounts = ViewBag.SeasonCounts as Dictionary<int, int> ?? new Dictionary<int, int>();
+        var selectedSeason = ViewBag.SelectedSeason;
+    }
+
+    <div class="d-flex flex-wrap gap-2 mb-4 justify-content-center">
+        <a href="@Url.Action("Index", "Perfumes", new { area = "User", search = ViewBag.Search })" 
+           class="btn btn-sm @(selectedSeason == null ? "btn-gold" : "btn-outline-light") px-3 rounded-pill shadow-sm">
+           ВСИЧКИ
+        </a>
+
+        @foreach (var season in seasonNames)
+        {
+            var count = seasonCounts.ContainsKey(season.Key) ? seasonCounts[season.Key] : 0;
+            bool isActive = selectedSeason?.ToString() == season.Key.ToString();
+        
+            <a href="@Url.Action("Index", "Perfumes", new { area = "User", seasonId = season.Key, search = ViewBag.Search })" 
+               class="btn btn-sm @(isActive ? "btn-gold" : "btn-outline-light") px-3 rounded-pill shadow-sm">
+                @switch (season.Key)
+                {
+                    case 1: <i class="bi bi-flower1"></i> @:ПРОЛЕТ
+                    break;
+                    case 2: <i class="bi bi-sun"></i> @:ЛЯТО
+                    break;
+                    case 3: <i class="bi bi-leaf"></i> @:ЕСЕН
+                    break;
+                    case 4: <i class="bi bi-snow"></i> @:ЗИМА
+                    break;
+                }
+                <span class="badge rounded-pill bg-dark ms-1">@count</span>
+            </a>
+        }
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mb-4 justify-content-center">
+        @foreach (var field in sortLabels.Keys)
+        {
+            if (field == "season")
+            {
+                <a class="btn btn-sm @(sortBy == "season" ? "btn-gold" : "btn-outline-light") shadow-sm rounded-pill px-3"
+                   href="@Url.Action("Index", "Perfumes", new { area = "User", sortBy = "season", sortDir = "asc", search = currentSearch, seasonId = selectedSeason })">
+                    <i class="bi bi-stars"></i> @sortLabels[field]
+                </a>
+            }
+            else
+            {
+                <div class="btn-group shadow-sm">
+                    @* Ascending *@
+                    <a class="btn btn-sm @(sortBy == field && sortDir == "asc" ? "btn-gold" : "btn-outline-light")"
+                       href="@Url.Action("Index", "Perfumes", new { area = "User", sortBy = field, sortDir = "asc", search = currentSearch, seasonId = selectedSeason })">
+                        @sortLabels[field] ↑
+                    </a>
+                    @* Descending *@
+                    <a class="btn btn-sm @(sortBy == field && sortDir == "desc" ? "btn-gold" : "btn-outline-light")"
+                       href="@Url.Action("Index", "Perfumes", new { area = "User", sortBy = field, sortDir = "desc", search = currentSearch, seasonId = selectedSeason })">
+                        ↓
+                    </a>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="row g-4">
+        @foreach (var perfume in Model)
+        {
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="card perfume-card h-100 shadow-lg border-0 rounded-4">
+
+                    @{
+                        var imageUrls = (Dictionary<int, string>)ViewBag.ImageUrls;
+                        var imageUrl = imageUrls.ContainsKey(perfume.Id) ? imageUrls[perfume.Id] : "/images/default.png";
+                     }
+
+                    <img src="@imageUrl"
+                         class="card-img-top rounded-top-4"
+                         style="height:240px; object-fit:cover;" />
+
+                    <div class="card-body d-flex flex-column">
+
+                        <h5 class="fw-bold mb-0">@perfume.Name</h5>
+                        <p class="text-muted small mb-2">@perfume.Brand.Name</p>
+
+                        <div class="mb-2">
+                            <span class="badge bg-dark">
+                                @perfume.Gender.Name
+                            </span>
+                            <span class="badge bg-secondary">
+                                @perfume.Season.Name
+                            </span>
+                        </div>
+
+                        <div class="mb-3">
+                            <span class="fw-bold text-gold fs-5">
+                                €@perfume.Price.ToString("0.00")
+                            </span>
+                            <span class="text-muted ms-2">
+                                · @(perfume.Volume)mL
+                            </span>
+                        </div>
+
+                        <small>
+                            <strong>Връхни:</strong>
+                            @string.Join(", ", perfume.TopScents.Select(s => s.Name))
+                        </small>
+                        <small>
+                            <strong>Сърцеви:</strong>
+                            @string.Join(", ", perfume.HeartScents.Select(s => s.Name))
+                        </small>
+                        <small class="mb-2">
+                            <strong>Базови:</strong>
+                            @string.Join(", ", perfume.BaseScents.Select(s => s.Name))
+                        </small>
+
+                        @if (!string.IsNullOrWhiteSpace(perfume.Original))
+                        {
+                            <small class="fst-italic text-warning">
+                                Вдъхновен от: @perfume.Original
+                            </small>
+                        }
+
+                        <div class="mt-auto d-flex gap-2 pt-3">
+                            <a asp-action="Details"
+                            asp-route-id="@perfume.Id"
+                            class="btn btn-outline-light btn-sm w-50">
+                                Детайли
+                            </a>
+
+                            <div class="dropdown w-50">
+                                <button class="btn btn-outline-light btn-sm dropdown-toggle w-100"
+                                data-bs-toggle="dropdown">
+                                    Виж в каталози
+                                </button>
+
+                                <ul class="dropdown-menu" style="z-index: 1050; position: absolute;">
+                                    @if (!catalogues.Any())
+                                    {
+                                        <li>
+                                            <span class="dropdown-item text-muted">
+                                                Няма налични каталози
+                                            </span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        @foreach (var c in catalogues)
+                                        {
+                                            var isInCatalogue = c.Perfumes?.Any(p => p.Id == perfume.Id) ?? false;
+                                            <li>
+                                                <form asp-area="User"
+                                                asp-route-indexPerfume="@true"
+                                                asp-controller="Catalogues"
+                                                asp-action="@(isInCatalogue ? "RemovePerfume" : "AddPerfume")"
+                                                method="post"
+                                                class="d-inline">
+                                                    <input type="hidden" name="catalogueId" value="@c.Id" />
+                                                    <input type="hidden" name="perfumeId" value="@perfume.Id" />
+                                                    <button type="submit" class="dropdown-item">
+                                                        @c.Name
+                                                        <span class="ms-2">
+                                                            @(isInCatalogue ? "➖" : "➕")
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        }
+
+                                    }
+
+                                    <li><hr class="dropdown-divider" /></li>
+                                    @if (User.Identities.Any(i => i.IsAuthenticated)) {
+                                        <li>
+                                            <a class="dropdown-item fw-bold"
+                                            asp-area="User"
+                                            asp-controller="Catalogues"
+                                            asp-action="Create"
+                                            asp-route-perfumeId="@perfume.Id">
+                                                + Нов каталог
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-area="Identity"
+                                               asp-page="/Account/Login">
+                                                Впиши се
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .perfume-card {
+        background: linear-gradient(180deg, #111, #1c1c1c);
+        color: #f5f5f5;
+        transition: all .3s ease;
+    }
+
+        .perfume-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,.6);
+        }
+
+    .text-gold {
+        color: #d4af37;
+    }
+
+    .dropdown-menu {
+        z-index: 1060 !important;
+    }
+
+    .col-xl-3:has(.show),
+    .col-lg-4:has(.show),
+    .col-md-6:has(.show) {
+        position: relative;
+        z-index: 1050;
+    }
+
+    .perfume-card {
+        position: relative; 
+    }
+
+    .card-body {
+        overflow: visible !important;
+    }
+    .card-body {
+        position: relative;
+        z-index: 1; 
+    }
+
+    .dropdown-menu.show {
+        display: block;
+        position: absolute;
+        z-index: 9999 !important; 
+        background-color: #1a1a1a;
+        border: 1px solid #d4af37;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .col-xl-3, .col-lg-4, .col-md-6 {
+        transition: z-index 0s;
+    }
+
+        .col-xl-3:focus-within, .col-lg-4:focus-within, .col-md-6:focus-within {
+            z-index: 1000;
+        }
+</style>

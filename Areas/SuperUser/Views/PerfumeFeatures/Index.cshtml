@@ -1,0 +1,173 @@
+﻿@model PerfumeFeaturesViewModel
+
+@{
+    ViewData["Title"] = "Характеристики на продукти";
+}
+
+<div class="container-fluid py-5">
+
+    <h1 class="display-6 fw-bold text-center mb-5 text-gold">
+        ⚙️ Характеристики на парфюмите
+    </h1>
+
+    <div class="row g-4">
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="feature-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold">Марки</h5>
+                    <a asp-controller="Brands"
+                       asp-action="Create"
+                       class="btn btn-sm btn-gold">＋</a>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    @foreach (var b in Model.Brands)
+                    {
+                        <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                            @b.Name
+                            <span class="btn-group btn-group-sm">
+                                <a asp-controller="Brands"
+                                   asp-action="Edit"
+                                   asp-route-id="@b.Id"
+                                   class="btn btn-outline-light">✎</a>
+                                <a asp-controller="Brands"
+                                   asp-action="Delete"
+                                   asp-route-id="@b.Id"
+                                   class="btn btn-outline-danger">✕</a>
+                            </span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="feature-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold">Пол</h5>
+                    <a asp-controller="Genders"
+                       asp-action="Create"
+                       class="btn btn-sm btn-gold">＋</a>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    @foreach (var g in Model.Genders)
+                    {
+                        <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                            @g.Name
+                            <span class="btn-group btn-group-sm">
+                                <a asp-controller="Genders"
+                                   asp-action="Edit"
+                                   asp-route-id="@g.Id"
+                                   class="btn btn-outline-light">✎</a>
+                                <a asp-controller="Genders"
+                                   asp-action="Delete"
+                                   asp-route-id="@g.Id"
+                                   class="btn btn-outline-danger">✕</a>
+                            </span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="feature-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold">Сезони</h5>
+                    <a asp-controller="Seasons"
+                       asp-action="Create"
+                       class="btn btn-sm btn-gold">＋</a>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    @foreach (var s in Model.Seasons)
+                    {
+                        <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                            [@s.Id] @s.Name
+                            <span class="btn-group btn-group-sm">
+                                <a asp-controller="Seasons"
+                                   asp-action="Edit"
+                                   asp-route-id="@s.Id"
+                                   class="btn btn-outline-light">✎</a>
+                                <a asp-controller="Seasons"
+                                   asp-action="Delete"
+                                   asp-route-id="@s.Id"
+                                   class="btn btn-outline-danger">✕</a>
+                            </span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-lg-6">
+            <div class="feature-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold">Ароматни нотки</h5>
+                    <a asp-controller="Scents"
+                       asp-action="Create"
+                       class="btn btn-sm btn-gold">＋</a>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    @foreach (var s in Model.Scents)
+                    {
+                        <li class="list-group-item bg-transparent text-light d-flex justify-content-between align-items-center">
+                            @s.Name
+                            <span class="btn-group btn-group-sm">
+                                <a asp-controller="Scents"
+                                   asp-action="Edit"
+                                   asp-route-id="@s.Id"
+                                   class="btn btn-outline-light">✎</a>
+                                <a asp-controller="Scents"
+                                   asp-action="Delete"
+                                   asp-route-id="@s.Id"
+                                   class="btn btn-outline-danger">✕</a>
+                            </span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    body {
+        background: radial-gradient(circle at top, #111, #000);
+    }
+
+    .feature-card {
+        background: linear-gradient(180deg, #141414, #1c1c1c);
+        color: #f5f5f5;
+        border-radius: 1rem;
+        padding: 1.25rem;
+        box-shadow: 0 15px 30px rgba(0,0,0,.6);
+    }
+
+    .text-gold {
+        color: #d4af37;
+    }
+
+    .btn-gold {
+        background: linear-gradient(135deg, #d4af37, #b8962e);
+        color: #000;
+        border: none;
+    }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, #e5c75a, #c9a73a);
+        }
+
+    .list-group-item {
+        border-color: rgba(255,255,255,.05);
+    }
+
+    .feature-scroll {
+        max-height: 420px;
+        overflow-y: auto;
+    }
+</style>

@@ -1,0 +1,147 @@
+﻿@model Aromo.Models.Perfume
+
+@{
+    ViewData["Title"] = "Детайли за парфюм";
+    var catalogues = ViewBag.Catalogues as List<Aromo.Models.Catalogue>;
+}
+
+<div class="container py-5">
+    <div class="row g-5 align-items-start">
+
+        <div class="col-lg-5">
+
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <img src="@ViewBag.ImageUrl"
+                     style="height:520px; object-fit:cover;"
+                     class="w-100" />
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <h1 class="fw-bold text-gold mb-2">
+                @Model.Name
+            </h1>
+
+            <h5 class="text-muted mb-3">
+                @Model.Brand.Name
+            </h5>
+
+            @if (!string.IsNullOrEmpty(Model.Original))
+            {
+                <p class="fst-italic text-warning mb-4">
+                    Вдъхновен от: @Model.Original
+                </p>
+            }
+
+            <div class="mb-4">
+                <span class="badge bg-dark me-2">
+                    @Model.Gender.Name
+                </span>
+                <span class="badge bg-secondary">
+                    @Model.Season.Name
+                </span>
+            </div>
+
+            <div class="mb-4">
+                <p>
+                    <strong>Връхни нотки:</strong><br />
+                    @string.Join(", ", Model.TopScents.Select(s => s.Name))
+                </p>
+
+                <p>
+                    <strong>Сърцеви нотки:</strong><br />
+                    @string.Join(", ", Model.HeartScents.Select(s => s.Name))
+                </p>
+
+                <p>
+                    <strong>Базови нотки:</strong><br />
+                    @string.Join(", ", Model.BaseScents.Select(s => s.Name))
+                </p>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <strong>Обем:</strong> @Model.Volume ml
+                </div>
+                <div class="col-md-6">
+                    <strong>Цена:</strong> €@Model.Price.ToString("0.00")
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap">
+                <a asp-action="Index"
+                class="btn btn-outline-dark"
+                style="color:white">
+                    ← Обратно
+                </a>
+
+                @if (catalogues != null)
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle"
+                        data-bs-toggle="dropdown">
+                            Виж в каталози
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            @if (!catalogues.Any())
+                            {
+                                <li>
+                                    <span class="dropdown-item text-muted">
+                                        Няма налични каталози
+                                    </span>
+                                </li>
+                            })
+                            @foreach (var c in catalogues)
+                            {
+                                var isInCatalogue = c.Perfumes?.Any(p => p.Id == Model.Id) ?? false;
+                                <li>
+                                    <form asp-area="User"
+                                    asp-route-indexPerfume="@true"
+                                    asp-controller="Catalogues"
+                                    asp-action="@(isInCatalogue ? "RemovePerfume" : "AddPerfume")"
+                                    method="post"
+                                    class="d-inline">
+                                        <input type="hidden" name="catalogueId" value="@c.Id" />
+                                        <input type="hidden" name="perfumeId" value="@Model.Id" />
+                                        <button type="submit" class="dropdown-item">
+                                            @c.Name
+                                            <span class="ms-2">
+                                                @(isInCatalogue ? "➖" : "➕")
+                                            </span>
+                                        </button>
+                                    </form>
+                                </li>
+                            }
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            @if (User.Identity?.IsAuthenticated ?? false)
+                            {
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-area="User"
+                                       asp-controller="Catalogues"
+                                       asp-action="Create"
+                                       asp-route-id="@Model.Id">
+                                        Добави нов каталог
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-area="Identity"
+                                       asp-page="/Account/Login">
+                                        Впиши се
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

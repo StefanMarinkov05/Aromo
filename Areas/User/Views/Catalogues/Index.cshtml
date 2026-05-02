@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Aromo.Models.Catalogue>
+@{
+    ViewData["Title"] = "Моите каталози";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-gold">📦 Моите каталози</h2>
+        <a asp-action="Create" class="btn btn-gold">➕ Нов каталог</a>
+    </div>
+
+    @foreach (var catalogue in Model)
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-dark text-gold fw-bold d-flex justify-content-between align-items-center">
+                <span>@catalogue.Name</span>
+                <span>
+                    <a asp-action="Details" asp-route-id="@catalogue.Id" class="btn btn-sm btn-outline-light me-1" title="Детайли">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@catalogue.Id" class="btn btn-sm btn-outline-warning me-1" title="Редакция">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@catalogue.Id" class="btn btn-sm btn-outline-danger" title="Изтриване">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </span>
+            </div>
+
+
+            <div class="card-body" style="background-color:black">
+                @if (!catalogue.Perfumes.Any())
+                {
+                    <p class="text-muted">Няма добавени парфюми.</p>
+                }
+                else
+                {
+                    <table class="table align-middle">
+                        <tbody>
+                            @foreach (var perfume in catalogue.Perfumes.Take(5))
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-area=""
+                                           asp-controller="Perfumes"
+                                           asp-action="Details"
+                                           asp-route-id="@perfume.Id"
+                                           class="fw-semibold text-decoration-none">
+                                            @perfume.Name вдъхновен от (@perfume.Original)
+                                        </a>
+                                        <div class="text-muted small">
+                                            @perfume.Brand?.Name €@perfume.Price @(perfume.Volume)mL
+                                        </div>
+                                    </td>
+
+                                    <td class="text-end">
+                                        <form asp-area="User" asp-controller="Catalogues"
+                                              asp-action="RemovePerfume" method="post" class="d-inline"
+                                              asp-route-indexPerfume="@false">
+                                            <input type="hidden" name="catalogueId" value="@catalogue.Id" />
+                                            <input type="hidden" name="perfumeId" value="@perfume.Id" />
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                ❌
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    @if (catalogue.Perfumes.Count > 5)
+                    {
+                        <div class="text-end text-muted small">
+                            + още @(catalogue.Perfumes.Count - 5) парфюма
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+</div>

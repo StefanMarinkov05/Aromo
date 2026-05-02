@@ -1,0 +1,85 @@
+﻿@model Aromo.Models.Perfume
+
+@{
+    ViewData["Title"] = "Изтриване на парфюм";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-dark text-gold fw-bold fs-4">
+            🗑️ Изтриване на парфюм
+        </div>
+
+        <div class="card-body">
+            <p class="lead text-danger">
+                <strong>⚠️ Внимание:</strong> Сигурен ли сте, че искате да изтриете @Model.Name
+            </p>
+
+            <div class="row g-4">
+                <div class="col-md-4 text-center">
+                    <img src="@ViewBag.ImageUrl"
+                         onerror="this.src='/images/default.png'"
+                         class="img-fluid rounded shadow"
+                         alt="Perfume image" />
+                </div>
+
+                <div class="col-md-8">
+                    <dl class="row" style="color:black">
+
+                        <dt class="col-sm-4">Име</dt>
+                        <dd class="col-sm-8">@Model.Name</dd>
+
+                        <dt class="col-sm-4">Оригинал</dt>
+                        <dd class="col-sm-8">@Model.Original</dd>
+
+                        <dt class="col-sm-4">Марка</dt>
+                        <dd class="col-sm-8">@Model.Brand?.Name</dd>
+
+                        <dt class="col-sm-4">Пол</dt>
+                        <dd class="col-sm-8">@Model.Gender?.Name</dd>
+
+                        <dt class="col-sm-4">Сезон</dt>
+                        <dd class="col-sm-8">@Model.Season?.Name</dd>
+
+                        <dt class="col-sm-4">Цена</dt>
+                        <dd class="col-sm-8">€@Model.Price</dd>
+
+                        <dt class="col-sm-4">Обем</dt>
+                        <dd class="col-sm-8">@(Model.Volume)mL</dd>
+
+                        <dt class="col-sm-4">Връхни нотки</dt>
+                        <dd class="col-sm-8">
+                            @string.Join(", ", Model.TopScents.Select(s => s.Name))
+                        </dd>
+
+                        <dt class="col-sm-4">Сърцеви нотки</dt>
+                        <dd class="col-sm-8">
+                            @string.Join(", ", Model.HeartScents.Select(s => s.Name))
+                        </dd>
+
+                        <dt class="col-sm-4">Базови нотки</dt>
+                        <dd class="col-sm-8">
+                            @string.Join(", ", Model.BaseScents.Select(s => s.Name))
+                        </dd>
+
+                    </dl>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <form asp-action="Delete" method="post" class="text-end">
+                <input type="hidden" asp-for="Id" />
+
+                <button type="submit" class="btn btn-danger px-4">
+                    🗑️ Изтрий
+                </button>
+
+                <a asp-action="Index" class="btn btn-outline-secondary ms-2">
+                    Отказ
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
